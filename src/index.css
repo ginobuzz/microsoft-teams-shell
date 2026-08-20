@@ -4,18 +4,45 @@
   box-sizing: border-box;
 }
 
+:root {
+  --teams-brand: #5B5FC7;
+  --teams-brand-active: #4F52B2;
+  --teams-shell: #ECECEC;
+  --teams-title-bar: #F0F0F0;
+  --teams-app-rail: #F0F0F0;
+  --teams-nav-panel: #F5F5F5;
+  --teams-canvas: #FFFFFF;
+  --teams-text-primary: #242424;
+  --teams-text-secondary: #616161;
+  --teams-text-tertiary: #424242;
+  --teams-text-placeholder: #707070;
+  --teams-border: #D1D1D1;
+  --teams-border-light: #E0E0E0;
+  --teams-border-subtle: rgba(0, 0, 0, 0.05);
+  --teams-hover: rgba(0, 0, 0, 0.05);
+  --teams-shadow-card: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+  --teams-title-bar-height: 48px;
+  --teams-app-rail-width: 68px;
+  --teams-nav-width: 320px;
+}
+
 html, body, #root {
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
+.fluent-root {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Web', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #242424;
-  background: #f5f5f5;
+  color: var(--teams-text-primary);
+  background: var(--teams-shell);
   font-size: 14px;
   line-height: 1.4286;
 }

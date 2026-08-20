@@ -88,9 +88,6 @@ export default function ChatView({
 }) {
   const activeContact = contacts.find((c) => c.id === activeChatId)
   const baseMessages = messagesByContact[activeChatId] || []
-  const participantCount = activeContact.isGroup || activeContact.isChannel
-    ? activeContact.memberCount ?? new Set(baseMessages.map((m) => m.senderId)).size
-    : 2
   const allChats = [...favorites, ...projectNorthwind, ...chatList]
   const chatEntry = allChats.find((c) => c.contactId === activeChatId)
   const draft = chatEntry?.draft || ''
@@ -537,7 +534,6 @@ export default function ChatView({
           activeContact={activeContact}
           isChannel={isChannel}
           isGroup={isGroup}
-          participantCount={participantCount}
           hasSessions={hasSessions}
           showSessions={showSessions}
           onToggleSessions={() => setShowSessions((prev) => !prev)}
