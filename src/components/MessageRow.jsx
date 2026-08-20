@@ -202,6 +202,7 @@ export default function MessageRow({ message, activeContact, onOpenThread }) {
       <div className="message-content-wrap">
         <div className="message-meta">
           {!isMe && <span className="message-sender-name">{sender.name}</span>}
+          {!isMe && sender?.isAgent && <span className="message-ai-badge">AI generated</span>}
           <span className="message-timestamp">{message.time}</span>
         </div>
         <div className={`message-bubble ${message.isPrivate ? 'message-bubble-private' : ''}`}>

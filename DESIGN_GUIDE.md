@@ -6,15 +6,26 @@
 
 | Element | Hex | Usage |
 |---------|-----|-------|
-| Title Bar | `#EBEBEB` | Top header bar containing search and navigation |
-| App Bar (Nav Rail) | `#EBEBEB` | Far-left vertical icon navigation |
-| Search Bar | `#FAFAFA` | Search input in the title bar |
+| Title Bar | `#F0F0F0` | Top header bar containing search and navigation |
+| App Bar (Nav Rail) | `#F0F0F0` | Far-left vertical icon navigation |
+| Search Bar | `#FFFFFF` | Elevated search input in the title bar |
 | Chat List | `#F5F5F5` | Chat list panel (right of the app bar) |
 | Chat Canvas | `#FFFFFF` | Main area where chat messages are displayed |
 | Agents Rail | `#FAFAFA` | Right-side rail for per-conversation agents |
 | Channel Thread Rail | `#FFFFFF` | Right-side rail for a channel post's replies |
 
-The title bar, app bar, and chat list form a cool neutral palette that matches current Microsoft Teams. The chat list is slightly lighter than the chrome so its surface reads as a container nested inside it. The search bar is the lightest surface in the header, floating on top of the title bar.
+The title bar, app bar, and chat list follow the reference Teams shell in `lumiwei_microsoft/Teams-UI-Generation`. The search bar is white with the Fluent card shadow (`0 0 2px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.14)`) so it floats above the shell chrome.
+
+### Shell geometry
+
+- Title bar: `48px`
+- App rail: `68px`
+- Chat/activity navigation pane: `320px`
+- Navigation pane header: `60px`
+- App-rail rows: full-width, icon plus `10px` label, `2px × 48px` active indicator
+- Navigation list rows: `32px` high, `6px` radius, selected fill `#FFFFFF` with a subtle alpha border
+- Unread marker: `4px` dark dot on the left edge of the row
+- Compose field: `44px` minimum height, `6px` radius, `72px` canvas side inset
 
 ### Message Bubbles
 
@@ -22,6 +33,13 @@ The title bar, app bar, and chat list form a cool neutral palette that matches c
 |---------|-----|-----------|
 | Other User | `#F5F5F5` | Left-aligned |
 | Current User | `#E8EBFA` | Right-aligned |
+
+Message anatomy follows the reference shell:
+- Other/agent bubble: `6px` radius, `16px` horizontal padding, `12px` top and `8px` bottom padding.
+- Current-user bubble: `6px` radius, `16px` horizontal and `8px` vertical padding.
+- Sender and timestamp metadata: `12px/16px`, `#616161`, with `4px` space before the bubble.
+- Agent metadata includes a compact `AI generated` badge: `10px`, 16px high, `#E0E0E0` border.
+- Regular-message avatar top aligns with the bubble, not the sender metadata row.
 
 ### Chat List
 
@@ -62,6 +80,17 @@ Set globally on `body` in `src/index.css`. All components should inherit — avo
 - Weight: `700`
 - Line height: inherits the body `1.4286` (≈25.7px at 18px)
 
+### Chat Header Actions
+
+Match Lumi's `ChannelHeader` action order exactly:
+- Channel context cluster: channel-share icon, divider, guest icon, divider, `Confidential`.
+- Video split button, then a 24px divider.
+- Threads toggle for channels/groups.
+- Right-panel toggle (also opens agent sessions when that rail is available).
+- More options.
+
+Do not reintroduce the legacy participants or apps buttons into this cluster.
+
 ### Chat Header Tabs
 
 - Size: 14px
@@ -79,7 +108,7 @@ Pass `size` to the common `Avatar` component. Established sizes:
 |---|---|
 | Chat list item | `20` |
 | Title bar (current user) | `28` |
-| Chat view header | `28` |
+| Chat view header | `32` |
 | Message row | `32` |
 | Agents rail list + detail header | `24` |
 | Prompt-suggestions empty state | `72` |
@@ -110,6 +139,7 @@ Before adding an icon inline, check `src/components/common/Icon.jsx` — the sha
 - **Inactive state:** Outlined icons, `#666666`
 - **Active state:** Filled icons, Teams purple (`#5B5FC7`); same color drives a 3px left-edge active indicator spanning the **full height of the nav-item row** (flush top to bottom, not capped) and an 8% tinted background fill (`rgba(91, 95, 199, 0.08)`)
 - **Clickable surfaces:** `chat` and `activity` toggle the left pane (ChatList ↔ ActivityList). Others are decorative for now.
+- **Implementation:** use `@fluentui/react-icons` directly. The reference sequence is Activity, Chat, Calendar, Calls, OneDrive, Copilot, More, Apps. Do not replace these with hand-drawn SVG approximations.
 
 ## Message Patterns
 
