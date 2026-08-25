@@ -1,4 +1,4 @@
-import { IconButton, Close, Plus } from './common'
+import { IconButton, Close, Plus, AgentTag } from './common'
 import './SessionsRail.css'
 
 // Link icon used on sessions that were spawned from a source chat — kept inline
@@ -9,7 +9,7 @@ const LinkIcon = () => (
   </svg>
 )
 
-export default function SessionsRail({ sessions, activeSessionId, onSelectSession, onClose, onNewSession }) {
+export default function SessionsRail({ sessions, activeSessionId, onSelectSession, onClose, onNewSession, taggingSessionId }) {
   return (
     <div className="sessions-rail">
       <div className="sessions-rail-header">
@@ -35,6 +35,9 @@ export default function SessionsRail({ sessions, activeSessionId, onSelectSessio
               {session.sourceChatId && <LinkIcon />}
             </div>
             <div className="session-time">{session.time}</div>
+            {(session.tag || session.id === taggingSessionId) && (
+              <AgentTag text={session.tag} pending={session.id === taggingSessionId} className="session-tag" />
+            )}
             <div className="session-preview">{session.preview}</div>
           </div>
         ))}

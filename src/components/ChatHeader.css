@@ -19,11 +19,13 @@
 .chat-header-identity {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0;
   min-width: 0;
 }
 
 .chat-header-name {
+  flex-shrink: 1;
+  min-width: 0;
   margin-left: 12px;
   overflow: hidden;
   color: var(--teams-text-primary);
@@ -32,6 +34,10 @@
   line-height: 24px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chat-header-identity .agent-tag {
+  margin-left: 12px;
 }
 
 .chat-header-actions {

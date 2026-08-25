@@ -131,6 +131,14 @@ export function ChatMultiple({ size = 18 }) {
   )
 }
 
+export function Sparkle({ size = 12 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M6.5 1.5c.2 0 .37.14.42.33L7.6 4.4a2.5 2.5 0 0 0 1.72 1.72l2.57.68a.44.44 0 0 1 0 .84l-2.57.68A2.5 2.5 0 0 0 7.6 9.94l-.68 2.57a.44.44 0 0 1-.84 0l-.68-2.57a2.5 2.5 0 0 0-1.72-1.72L1.11 7.5a.44.44 0 0 1 0-.84l2.57-.68A2.5 2.5 0 0 0 5.4 4.26l.68-2.43a.44.44 0 0 1 .42-.33zM12.5 9.5c.18 0 .33.12.38.29l.3 1.03a1.25 1.25 0 0 0 .86.86l1.03.3a.4.4 0 0 1 0 .76l-1.03.3a1.25 1.25 0 0 0-.86.86l-.3 1.03a.4.4 0 0 1-.76 0l-.3-1.03a1.25 1.25 0 0 0-.86-.86l-1.03-.3a.4.4 0 0 1 0-.76l1.03-.3a1.25 1.25 0 0 0 .86-.86l.3-1.03a.4.4 0 0 1 .38-.29z"/>
+    </svg>
+  )
+}
+
 export function Lock({ size = 12 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">

@@ -131,7 +131,7 @@ Standard divider used throughout the app (chat list header rows, chat view tab b
 
 When you need a new icon, start your search at [fluenticons.co](https://fluenticons.co/) — it's the Fluent UI icon set that matches Teams' visual language.
 
-Before adding an icon inline, check `src/components/common/Icon.jsx` — the shared library already covers common cases (`Close`, `Plus`, `ChevronDown`, `ChevronLeft`, `Send`, `Clock`, `Search`, `Dots`, `EmojiAdd`, `Edit`, `Lock`). Add new reusable icons there rather than inlining SVG in feature components.
+Before adding an icon inline, check `src/components/common/Icon.jsx` — the shared library already covers common cases (`Close`, `Plus`, `ChevronDown`, `ChevronLeft`, `Send`, `Clock`, `Search`, `Dots`, `EmojiAdd`, `Edit`, `Lock`, `Sparkle`). Add new reusable icons there rather than inlining SVG in feature components.
 
 ### App Bar (Nav Rail) Icons
 
@@ -186,6 +186,18 @@ Channel post bubbles get a slightly wider max-width (`80%` vs the default `65%`)
 ### Prompt suggestions
 
 New-session empty state for an agent chat: centered 72px avatar + agent name + short description + a 2×3 grid of suggestion cards. Defined in `src/data/promptSuggestions.js` keyed by agent contact id; each card has a `title`, `description`, the `text` to send, and a canned `response`.
+
+### Agent session tags
+
+A small pill next to an agent's name that surfaces the agent's own read on what it's currently doing — **scoped to one session**, and framed as agent-generated (not user-authored) metadata.
+
+- **Component:** `AgentTag` (`components/common/`) — a rounded pill with a small `Sparkle` icon + label. Two states:
+  - **Resolved:** `rgba(91, 95, 199, 0.08)` fill, `1px solid rgba(91, 95, 199, 0.24)` border, Teams-purple (`#5B5FC7`) text, `11px/600`. Pops in with a brief scale+fade (`agent-tag-pop`).
+  - **Pending ("Setting tag…"):** transparent fill, `1px solid var(--teams-border-light)` border, secondary-gray text, slow opacity pulse — shown for a beat while the agent "decides" on its tag before the real one resolves.
+- **Length rule:** tag text must read as a short phrase, **under 50 characters** — this is a glanceable label, not a summary.
+- **Where it renders:** next to the agent's name in `ChatHeader` (only when the chat has sessions), and under the name/time in each `SessionsRail` row — same data, two surfaces, always scoped to a specific session's `tag` field.
+- **Data:** `tag` is a plain string field on a session object (`src/data/sessions.js`, per-agent session lists) or on a `promptSuggestions.js` entry (used to seed a brand-new session's tag once the agent's first reply lands).
+- **Demo flow:** starting a new agent session and picking a prompt suggestion drives the live version of this — after the canned reply arrives, `ChatView` shows the pending shimmer for ~900ms, then calls `updateSession` with the suggestion's `tag`, simulating the agent setting its own tag in real time. Existing seeded sessions simply carry a `tag` already, so switching between them in `SessionsRail` shows each one's tag update instantly, reinforcing that it's per-session.
 
 ## Adaptive Cards
 

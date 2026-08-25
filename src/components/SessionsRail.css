@@ -112,6 +112,10 @@
   margin-top: 1px;
 }
 
+.session-tag {
+  margin-top: 4px;
+}
+
 .session-preview {
   font-size: 12px;
   color: #616161;

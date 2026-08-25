@@ -116,6 +116,9 @@ export default function ChatView({
   const [channelThreadPostId, setChannelThreadPostId] = useState(null)
   const [threadRailOpen, setThreadRailOpen] = useState(false)
   const [highlightMessageId, setHighlightMessageId] = useState(null)
+  // Session id currently having its self-generated agent tag "set" — drives
+  // the pending shimmer in ChatHeader / SessionsRail until it resolves.
+  const [taggingSessionId, setTaggingSessionId] = useState(null)
   const messagesEndRef = useRef(null)
 
   // Reset per-chat ephemeral state when activeChatId changes. Using the
@@ -137,6 +140,7 @@ export default function ChatView({
     setChannelThreadPostId(null)
     setThreadRailOpen(false)
     setHighlightMessageId(null)
+    setTaggingSessionId(null)
     const intentMatches = navIntent && navIntent.chatId === activeChatId
     const intentHasSession = intentMatches && 'sessionId' in navIntent
     if (intentHasSession) {
@@ -494,6 +498,7 @@ export default function ChatView({
   const sendPromptSuggestion = (suggestion) => {
     const chatId = activeChatId
     const bucket = canvasKey
+    const sessionIdAtSend = activeSessionId
     const myMessage = {
       id: `extra-${Date.now()}`,
       senderId: 'me',
@@ -521,6 +526,17 @@ export default function ChatView({
         ...prev,
         [bucket]: [...(prev[bucket] || []), agentMessage],
       }))
+
+      // The agent sets its own session tag once it has enough context on the
+      // task at hand — shown as a brief "Setting tag…" shimmer next to its
+      // name before the real tag pops in. Scoped to this session only.
+      if (suggestion.tag && sessionIdAtSend) {
+        setTaggingSessionId(sessionIdAtSend)
+        setTimeout(() => {
+          updateSession(chatId, sessionIdAtSend, { tag: suggestion.tag })
+          setTaggingSessionId((prev) => (prev === sessionIdAtSend ? null : prev))
+        }, 900)
+      }
     }, delay)
   }
 
@@ -537,6 +553,8 @@ export default function ChatView({
           hasSessions={hasSessions}
           showSessions={showSessions}
           onToggleSessions={() => setShowSessions((prev) => !prev)}
+          sessionTag={activeSession?.tag}
+          taggingPending={!!activeSessionId && taggingSessionId === activeSessionId}
           showThreads={threadRailOpen && channelThreadPostId === null}
           onToggleThreads={() => {
             if (threadRailOpen && channelThreadPostId === null) {
@@ -638,6 +656,7 @@ export default function ChatView({
           onSelectSession={setActiveSessionId}
           onClose={() => setShowSessions(false)}
           onNewSession={handleNewSession}
+          taggingSessionId={taggingSessionId}
         />
       )}
       {showAgents && (
