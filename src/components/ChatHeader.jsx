@@ -9,7 +9,7 @@ import {
   PanelRightExpandRegular,
   VideoRegular,
 } from '@fluentui/react-icons'
-import { Avatar } from './common'
+import { Avatar, AgentTag } from './common'
 import './ChatHeader.css'
 
 export default function ChatHeader({
@@ -21,6 +21,8 @@ export default function ChatHeader({
   onToggleSessions,
   showThreads,
   onToggleThreads,
+  sessionTag,
+  taggingPending,
 }) {
   return (
     <header className="chat-view-header">
@@ -28,6 +30,7 @@ export default function ChatHeader({
         <div className="chat-header-identity">
           <Avatar contact={activeContact} size={32} />
           <span className="chat-header-name">{activeContact.name}</span>
+          {hasSessions && <AgentTag text={sessionTag} pending={taggingPending} />}
         </div>
 
         <div className="chat-header-actions">

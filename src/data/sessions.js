@@ -1,13 +1,13 @@
 export const agentSessions = {
   2: [
-    { id: 's2-1', name: 'Notification system spec', time: 'Today 9:00 AM', preview: 'Drafted user preference management for push, email, and in-app channels.' },
-    { id: 's2-2', name: 'API error handling patterns', time: 'Yesterday 3:45 PM', preview: 'Discussed retry strategies and circuit breaker patterns for microservices.' },
-    { id: 's2-3', name: 'Migration plan review', time: 'Apr 15 11:20 AM', preview: 'Reviewed Postgres 14 to 16 migration steps and rollback strategies.' },
-    { id: 's2-4', name: 'Component refactor brainstorm', time: 'Apr 14 2:00 PM', preview: 'Explored breaking the settings page into smaller composable components.', sourceChatId: 8 },
-    { id: 's2-5', name: 'Release notes draft', time: 'Apr 12 10:30 AM', preview: 'Drafted v2.4 release notes covering agent handoff and plugin sandboxing.' },
-    { id: 's2-6', name: 'Onboarding flow copy', time: 'Apr 10 4:15 PM', preview: 'Wrote welcome messages and tooltip text for the new user onboarding wizard.' },
-    { id: 's2-7', name: 'Test strategy for webhooks', time: 'Apr 8 9:00 AM', preview: 'Outlined integration test approach for webhook delivery and retry logic.', sourceChatId: 16 },
-    { id: 's2-8', name: 'ADR: Event sourcing', time: 'Apr 5 1:30 PM', preview: 'Helped structure the architecture decision record for event sourcing adoption.' },
+    { id: 's2-1', name: 'Notification system spec', time: 'Today 9:00 AM', preview: 'Drafted user preference management for push, email, and in-app channels.', tag: 'Drafting notification spec' },
+    { id: 's2-2', name: 'API error handling patterns', time: 'Yesterday 3:45 PM', preview: 'Discussed retry strategies and circuit breaker patterns for microservices.', tag: 'Discussing retry patterns' },
+    { id: 's2-3', name: 'Migration plan review', time: 'Apr 15 11:20 AM', preview: 'Reviewed Postgres 14 to 16 migration steps and rollback strategies.', tag: 'Reviewing migration plan' },
+    { id: 's2-4', name: 'Component refactor brainstorm', time: 'Apr 14 2:00 PM', preview: 'Explored breaking the settings page into smaller composable components.', sourceChatId: 8, tag: 'Brainstorming refactor' },
+    { id: 's2-5', name: 'Release notes draft', time: 'Apr 12 10:30 AM', preview: 'Drafted v2.4 release notes covering agent handoff and plugin sandboxing.', tag: 'Drafting release notes' },
+    { id: 's2-6', name: 'Onboarding flow copy', time: 'Apr 10 4:15 PM', preview: 'Wrote welcome messages and tooltip text for the new user onboarding wizard.', tag: 'Writing onboarding copy' },
+    { id: 's2-7', name: 'Test strategy for webhooks', time: 'Apr 8 9:00 AM', preview: 'Outlined integration test approach for webhook delivery and retry logic.', sourceChatId: 16, tag: 'Planning webhook tests' },
+    { id: 's2-8', name: 'ADR: Event sourcing', time: 'Apr 5 1:30 PM', preview: 'Helped structure the architecture decision record for event sourcing adoption.', tag: 'Structuring event-sourcing ADR' },
   ],
   4: [
     { id: 's4-1', name: 'Sprint 14 open tickets', time: 'Today 8:30 AM', preview: 'Pulled up 4 open tickets assigned to you in Sprint 14.' },

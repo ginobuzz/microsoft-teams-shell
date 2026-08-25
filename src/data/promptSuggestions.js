@@ -10,6 +10,7 @@ export const promptSuggestions = {
       text: 'Give me a high-level tour of this codebase — entry points, main modules, and how data flows.',
       response:
         'Happy to. To give you a useful tour, share the repo (or paste the top-level tree and the main entry file) and tell me what you\'re trying to do with it — onboard, add a feature, or debug. I\'ll walk through the entry points, how modules depend on each other, and the main data-flow paths.',
+      tag: 'Touring codebase',
     },
     {
       title: 'Debug an issue',
@@ -17,6 +18,7 @@ export const promptSuggestions = {
       text: 'Help me debug an issue. I\'ll describe the symptoms — walk me through likely root causes.',
       response:
         'Go ahead — describe what you\'re seeing, what you expected, and any recent changes. If you have a stack trace, error message, or reproduction steps, paste those too. I\'ll suggest likely root causes in priority order and what to check to rule each out.',
+      tag: 'Debugging root cause',
     },
     {
       title: 'Design a system',
@@ -24,6 +26,7 @@ export const promptSuggestions = {
       text: 'I need to design a new system. Help me think through the architecture and trade-offs.',
       response:
         'Let\'s start with the problem, not the tech. What is the system for, what are the hard constraints (scale, latency, consistency, cost, team size), and what has to integrate with it? Once I know that, I\'ll sketch a couple of options with the trade-offs called out so you can pick deliberately.',
+      tag: 'Architecting system design',
     },
     {
       title: 'Refactor code',
@@ -31,6 +34,7 @@ export const promptSuggestions = {
       text: 'Review this code and suggest a cleaner refactor — I\'ll paste it in next.',
       response:
         'Paste the code whenever you\'re ready. Useful extra context: what this module is responsible for, which parts you feel are messy, and any constraints (public API to preserve, perf targets, test coverage). I\'ll flag the highest-leverage changes first instead of rewriting the whole thing.',
+      tag: 'Refactoring code review',
     },
     {
       title: 'Write test cases',
@@ -38,6 +42,7 @@ export const promptSuggestions = {
       text: 'Help me write unit and integration tests for a module I\'ll share.',
       response:
         'Sure — share the module and your test framework (Jest, Vitest, pytest, etc.). I\'ll cover the happy path, the edge cases that are easy to miss, and the failure modes. If integration tests need real infra (DB, HTTP), tell me what\'s available so I don\'t mock things you want to hit for real.',
+      tag: 'Writing test cases',
     },
     {
       title: 'Draft release notes',
@@ -45,6 +50,7 @@ export const promptSuggestions = {
       text: 'Draft release notes from a list of changes I\'ll provide.',
       response:
         'Paste the change list (commit messages, merged PRs, or a plain list) and tell me the audience — end users, customers, or engineers. I\'ll group by theme (features, fixes, breaking changes), rewrite for clarity, and keep the tone consistent with your previous releases if you share one.',
+      tag: 'Drafting release notes',
     },
   ],
   4: [
