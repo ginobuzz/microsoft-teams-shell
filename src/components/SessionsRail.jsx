@@ -35,7 +35,7 @@ export default function SessionsRail({ sessions, activeSessionId, onSelectSessio
               {session.sourceChatId && <LinkIcon />}
             </div>
             <div className="session-time">{session.time}</div>
-            {(session.tag || session.id === taggingSessionId) && (
+            {session.id === activeSessionId && (session.tag || session.id === taggingSessionId) && (
               <AgentTag text={session.tag} pending={session.id === taggingSessionId} className="session-tag" />
             )}
             <div className="session-preview">{session.preview}</div>

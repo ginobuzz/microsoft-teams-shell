@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { agentLogos } from '../shared/agentLogos'
 import { contacts, currentUser } from '../data/contacts'
-import { Avatar, LinkCard, PrivateDisclaimer, Check, ChainOfThought } from './common'
+import { Avatar, LinkCard, PrivateDisclaimer, Check, ChainOfThought, AgentTag } from './common'
 import MessageActions from './MessageActions'
 
 // Office-app icon tiles for adaptive cards that represent generated artifacts.
@@ -203,6 +203,7 @@ export default function MessageRow({ message, activeContact, onOpenThread }) {
         <div className="message-meta">
           {!isMe && <span className="message-sender-name">{sender.name}</span>}
           {!isMe && sender?.isAgent && <span className="message-ai-badge">AI generated</span>}
+          {!isMe && sender?.isAgent && message.tag && <AgentTag text={message.tag} />}
           <span className="message-timestamp">{message.time}</span>
         </div>
         <div className={`message-bubble ${message.isPrivate ? 'message-bubble-private' : ''}`}>
