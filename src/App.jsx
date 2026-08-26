@@ -8,6 +8,15 @@ import TitleBar from './components/TitleBar'
 import { FreModal } from './components/common'
 import './App.css'
 
+// Contact id for Project Northwind's "General" channel and the post ids for
+// its "API review Thursday" and "Handoff analytics" threads — targets for
+// the post-FRE demo arrows. The arrow visits API review first (full
+// review-and-merge flow), then Handoff analytics, so the user sees Cowork
+// carrying a different, concurrent label in each thread.
+const NORTHWIND_GENERAL_ID = 25
+const API_REVIEW_POST_ID = 'p25-2'
+const HANDOFF_ANALYTICS_POST_ID = 'p25-3'
+
 export default function App() {
   const [activeView, setActiveView] = useState('chat') // 'chat' | 'activity'
   const [activeChatId, setActiveChatId] = useState(1)
@@ -25,12 +34,25 @@ export default function App() {
   // hides it for the current session. Swap to localStorage gating later if a
   // real first-run-only behavior is needed.
   const [showFre, setShowFre] = useState(true)
+  // Post-FRE walkthrough: 'none' → 'general' (arrow at Project Northwind's
+  // General channel) → 'apiReview' (arrow at the API review Thursday post's
+  // reply badge — Cowork runs the full review-and-merge flow there, setting
+  // its "PR #212 review & merge" label) → 'handoff' (once that thread's
+  // done, the arrow moves to the Handoff analytics post, guiding the user to
+  // a second thread where Cowork sets a different, concurrent label —
+  // "watching this thread") → 'none' (done). Starts once the FRE is
+  // dismissed.
+  const [demoStep, setDemoStep] = useState('none')
 
-  const dismissFre = useCallback(() => setShowFre(false), [])
+  const dismissFre = useCallback(() => {
+    setShowFre(false)
+    setDemoStep('general')
+  }, [])
 
   const selectChat = useCallback((chatId) => {
     setActiveChatId(chatId)
     setReadChatIds(prev => (prev.has(chatId) ? prev : new Set(prev).add(chatId)))
+    setDemoStep(prev => (prev === 'general' && chatId === NORTHWIND_GENERAL_ID ? 'apiReview' : prev))
   }, [])
 
   const navigateToChat = useCallback((chatId, { showSessions, sessionId } = {}) => {
@@ -99,6 +121,7 @@ export default function App() {
             activeChatId={activeChatId}
             onSelectChat={selectChat}
             readChatIds={readChatIds}
+            demoArrowContactId={demoStep === 'general' ? NORTHWIND_GENERAL_ID : null}
           />
         )}
         <ChatView
@@ -111,60 +134,113 @@ export default function App() {
           dynamicSessionMessages={dynamicSessionMessages}
           navIntent={navIntent}
           clearNavIntent={clearNavIntent}
+          demoArrowPostId={
+            demoStep === 'apiReview'
+              ? API_REVIEW_POST_ID
+              : demoStep === 'handoff'
+                ? HANDOFF_ANALYTICS_POST_ID
+                : null
+          }
+          onDemoArrowPostOpened={() =>
+            setDemoStep(prev => (prev === 'apiReview' ? 'handoff' : 'none'))
+          }
         />
       </div>
       {showFre && (
         <FreModal
-          title="Feature name"
-          subtitle="One-sentence pitch for what this feature is and why it matters to the audience watching the demo."
+          title="Dynamic Agent Name/Label Customization"
+          subtitle="An ask from Anthropic and GitHub Copilot: give agents a way to say what role they're playing in a specific thread, right next to their name — not just that they're AI."
           onDismiss={dismissFre}
         >
           <h3 className="fre-section-title">Today</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Describe
-            the current experience the demo audience is familiar with — the
-            workflow, the surfaces, the people involved. Sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua, ut enim ad minim
-            veniam, quis nostrud exercitation.
+            A message from an agent can already be annotated with an
+            "AI Generated" tag, so people can tell a bot posted it. That
+            works fine for a single reply, but agents increasingly run
+            long, multi-message tasks inside a thread — reviewing a PR,
+            triaging a bug, drafting a doc — and every message just says
+            "AI Generated" regardless of what the agent is actually doing.
           </p>
 
           <h3 className="fre-section-title">Problem</h3>
           <p>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore. Name the friction sharply: what breaks down today,
-            who feels it, and how often. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est
-            laborum, consectetur adipiscing elit sed do eiusmod.
+            For long-running tasks in a thread, there's no way to annotate
+            or distinguish the role an agent is operating in. A teammate
+            skimming the thread can't tell "reviewing PR #123" from
+            "summarizing the incident" from "drafting release notes" — the
+            agent's name and the generic AI tag look identical every time.
           </p>
 
           <h3 className="fre-section-title">Solution</h3>
           <p>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Walk through the new
-            feature you're showing — the surface, the interaction, the moment
-            of delight. Duis aute irure dolor in reprehenderit in voluptate
-            velit esse cillum dolore eu fugiat nulla pariatur.
+            Allow custom tags / name aliases: a bot can set a short
+            (under 50 characters) plain-text label scoped to a single
+            thread or conversation. Every message the bot posts in that
+            thread renders with the label appended to its author name —
+            e.g. <strong>Claude [reviewing PR #123]</strong>.
           </p>
           <p>
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum. If the feature is
-            best understood through a sequence, list the key beats here so the
-            audience knows what to look for as the demo plays.
+            The label is applied at send time, per outgoing message — not
+            a global account rename. That means different threads can show
+            different labels for the same agent concurrently, and existing
+            messages already posted don't retroactively change when the
+            label updates.
           </p>
+
+          <h3 className="fre-section-title">Requirements</h3>
+          <ul className="fre-feature-list">
+            <li className="fre-feature">
+              <span className="fre-feature-check">✓</span>
+              <span className="fre-feature-text">
+                <span className="fre-feature-title">Length limit</span>
+                <span className="fre-feature-desc"> Labels must be under 50 characters, plain text.</span>
+              </span>
+            </li>
+            <li className="fre-feature">
+              <span className="fre-feature-check">✓</span>
+              <span className="fre-feature-text">
+                <span className="fre-feature-title">Mutually exclusive with AI Generated tag</span>
+                <span className="fre-feature-desc"> Once a custom label is applied, the generic "AI Generated" tag is suppressed for that message.</span>
+              </span>
+            </li>
+            <li className="fre-feature">
+              <span className="fre-feature-check">✓</span>
+              <span className="fre-feature-text">
+                <span className="fre-feature-title">Per-thread scoping</span>
+                <span className="fre-feature-desc"> Labels can differ across threads — the same agent can show a different label in each conversation.</span>
+              </span>
+            </li>
+            <li className="fre-feature">
+              <span className="fre-feature-check">✓</span>
+              <span className="fre-feature-text">
+                <span className="fre-feature-title">Applied at send time, not retroactive</span>
+                <span className="fre-feature-desc"> The label is attached per outgoing message, not a global rename. Updating it doesn't change the label on messages already posted.</span>
+              </span>
+            </li>
+            <li className="fre-feature">
+              <span className="fre-feature-check">✓</span>
+              <span className="fre-feature-text">
+                <span className="fre-feature-title">Resets for new threads</span>
+                <span className="fre-feature-desc"> A new thread starts back at the plain "AI Generated" tag until the agent sets a label for that thread.</span>
+              </span>
+            </li>
+          </ul>
 
           <h3 className="fre-section-title">What this Unlocks</h3>
           <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium. Spell out the downstream wins —
-            what gets faster, easier, or newly possible because of this
-            feature. Totam rem aperiam, eaque ipsa quae ab illo inventore
-            veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            Anyone scanning a thread can immediately see what role an agent
+            is playing there, without opening a session or asking. Agents
+            working several jobs at once across different threads stay
+            clearly distinguished, and the label trail itself becomes a
+            lightweight, at-a-glance history of what the agent was doing
+            and when.
           </p>
+
+          <h3 className="fre-section-title">Open Questions</h3>
           <p>
-            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-            aut fugit, sed quia consequuntur magni dolores eos qui ratione
-            voluptatem sequi nesciunt. Close with the audience-specific
-            takeaway — what the viewer should remember after the demo ends.
+            <strong>How does this evolve with the AI agent badge?</strong>{' '}
+            Does the custom label replace "AI Generated" outright, or sit
+            alongside a smaller, always-present compliance badge?
           </p>
         </FreModal>
       )}

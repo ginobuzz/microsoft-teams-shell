@@ -1,4 +1,4 @@
-import { EmojiAdd, Edit, Dots } from './common'
+import { EmojiAdd, Edit, Dots, ChatMultiple } from './common'
 import './MessageActions.css'
 
 // Hover toolbar shown above a message bubble. Contains quick emoji reactions,
@@ -12,7 +12,7 @@ const QUICK_REACTIONS = [
   { key: 'surprise', emoji: '😮', label: 'Surprise' },
 ]
 
-export default function MessageActions({ onReact }) {
+export default function MessageActions({ onReact, onReplyInThread }) {
   return (
     <>
       <div className="message-actions-trigger" aria-hidden="true" />
@@ -32,6 +32,16 @@ export default function MessageActions({ onReact }) {
         <EmojiAdd size={18} />
       </button>
       <span className="message-actions-divider" aria-hidden="true" />
+      {onReplyInThread && (
+        <button
+          type="button"
+          className="message-action-btn"
+          aria-label="Reply in thread"
+          onClick={onReplyInThread}
+        >
+          <ChatMultiple size={18} />
+        </button>
+      )}
       <button type="button" className="message-action-btn" aria-label="Edit">
         <Edit size={16} />
       </button>

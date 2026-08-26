@@ -85,6 +85,8 @@ export default function ChatView({
   dynamicSessionMessages,
   navIntent,
   clearNavIntent,
+  demoArrowPostId,
+  onDemoArrowPostOpened,
 }) {
   const activeContact = contacts.find((c) => c.id === activeChatId)
   const baseMessages = messagesByContact[activeChatId] || []
@@ -574,6 +576,7 @@ export default function ChatView({
                   key={post.id}
                   message={postToMessage(post)}
                   activeContact={activeContact}
+                  showThreadArrow={demoArrowPostId === post.id}
                   onOpenThread={() => {
                     if (threadRailOpen && channelThreadPostId === post.id) {
                       setThreadRailOpen(false)
@@ -581,6 +584,7 @@ export default function ChatView({
                     } else {
                       setChannelThreadPostId(post.id)
                       setThreadRailOpen(true)
+                      if (demoArrowPostId === post.id) onDemoArrowPostOpened?.()
                     }
                   }}
                 />

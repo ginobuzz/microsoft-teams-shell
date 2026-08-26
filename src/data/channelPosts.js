@@ -321,15 +321,6 @@ export const channelPostsByContact = {
           text: 'Migration guide draft is ready to pair against the PR as soon as it lands. 30 min turnaround on my side.',
           time: 'Today 9:10 AM',
         },
-        {
-          id: 'p27-4-r3',
-          senderId: 32,
-          text: "Tracking this thread against the April 25 milestone — 2 of 5 workstreams still yellow with 3 days left. Auth PR is the single blocking dependency; everything else can close once it lands. Want me to draft an escalation note if it slips past Wednesday?",
-          time: 'Today 9:18 AM',
-          // Scoped to this reply/thread, not a session — see DESIGN_GUIDE.md
-          // "Agent session tags" for the pattern.
-          tag: 'Tracking launch readiness',
-        },
       ],
     },
   ],

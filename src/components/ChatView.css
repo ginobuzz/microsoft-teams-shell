@@ -277,6 +277,21 @@
 }
 
 /* ── Thread reply indicator (under anchor bubble) ── */
+.message-thread-replies-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+/* Points at the reply badge during the post-FRE walkthrough. See
+   DESIGN_GUIDE.md → "Demo Hint Arrows". */
+.message-thread-replies-hint-arrow {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  translate: 4px -50%;
+  pointer-events: none;
+}
+
 .message-thread-replies {
   display: inline-flex;
   align-items: center;

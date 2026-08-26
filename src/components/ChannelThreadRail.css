@@ -108,6 +108,12 @@
   gap: 4px;
 }
 
+/* Agent "jumping into the thread" indicator, shown briefly after a user
+   starts a brand-new thread on a post — sits inline with the reply list. */
+.channel-thread-rail-typing {
+  margin-top: 4px;
+}
+
 /* Empty state for the threads list — shown when no posts/threads exist in
    the current chat scope. Center-aligned title + subtitle. */
 .channel-thread-rail-body-empty {

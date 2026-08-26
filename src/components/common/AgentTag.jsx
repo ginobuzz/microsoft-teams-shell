@@ -13,7 +13,7 @@ export default function AgentTag({ text, pending = false, className = '' }) {
       className={`agent-tag${pending ? ' agent-tag-pending' : ''}${className ? ` ${className}` : ''}`}
       title={pending ? undefined : text}
     >
-      <Sparkle size={11} />
+      <Sparkle size={9} />
       <span className="agent-tag-text">{pending ? 'Setting tag…' : text}</span>
     </span>
   )

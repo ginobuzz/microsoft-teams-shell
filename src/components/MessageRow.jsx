@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { agentLogos } from '../shared/agentLogos'
 import { contacts, currentUser } from '../data/contacts'
-import { Avatar, LinkCard, PrivateDisclaimer, Check, ChainOfThought, AgentTag } from './common'
+import { Avatar, LinkCard, PrivateDisclaimer, Check, ChainOfThought, AgentTag, DemoArrow } from './common'
 import MessageActions from './MessageActions'
 
 // Office-app icon tiles for adaptive cards that represent generated artifacts.
@@ -169,7 +169,7 @@ function ThreadReplyBadge({ reply, onClick }) {
   )
 }
 
-export default function MessageRow({ message, activeContact, onOpenThread }) {
+export default function MessageRow({ message, activeContact, onOpenThread, showThreadArrow }) {
   const isMe = message.senderId === 'me'
   const isMultiParty = activeContact.isGroup || activeContact.isChannel
   const sender = isMe
@@ -202,12 +202,19 @@ export default function MessageRow({ message, activeContact, onOpenThread }) {
       <div className="message-content-wrap">
         <div className="message-meta">
           {!isMe && <span className="message-sender-name">{sender.name}</span>}
-          {!isMe && sender?.isAgent && <span className="message-ai-badge">AI generated</span>}
-          {!isMe && sender?.isAgent && message.tag && <AgentTag text={message.tag} />}
+          {!isMe && sender?.isAgent && !message.tag && !message.tagPending && (
+            <span className="message-ai-badge">AI generated</span>
+          )}
+          {!isMe && sender?.isAgent && (message.tag || message.tagPending) && (
+            <AgentTag text={message.tag} pending={message.tagPending} />
+          )}
           <span className="message-timestamp">{message.time}</span>
         </div>
         <div className={`message-bubble ${message.isPrivate ? 'message-bubble-private' : ''}`}>
-          <MessageActions onReact={toggleReaction} />
+          <MessageActions
+            onReact={toggleReaction}
+            onReplyInThread={activeContact.isChannel ? onOpenThread : undefined}
+          />
           {message.isPrivate && <PrivateDisclaimer />}
           {message.forwardedFrom && (
             <div className="forwarded-message">
@@ -306,10 +313,17 @@ export default function MessageRow({ message, activeContact, onOpenThread }) {
           </div>
         )}
         {message.threadReply && (
-          <ThreadReplyBadge
-            reply={message.threadReply}
-            onClick={() => onOpenThread?.(message)}
-          />
+          <div className="message-thread-replies-wrap">
+            <ThreadReplyBadge
+              reply={message.threadReply}
+              onClick={() => onOpenThread?.(message)}
+            />
+            {showThreadArrow && (
+              <span className="message-thread-replies-hint-arrow">
+                <DemoArrow direction="left" />
+              </span>
+            )}
+          </div>
         )}
       </div>
       {isMe && isMultiParty && (

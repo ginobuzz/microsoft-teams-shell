@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { favorites, projectNorthwind, chatList, contacts, teams } from '../data'
 import { copilotLogo } from '../shared/assets'
-import { Avatar, ChevronDown, Dots, Search } from './common'
+import { Avatar, ChevronDown, Dots, Search, DemoArrow } from './common'
 import './ChatList.css'
 
 // Small rounded-square team icon used in the Teams & channels section. Mirrors
@@ -50,7 +50,7 @@ function SectionHeader({ label, collapsed, onToggle }) {
   )
 }
 
-export default function ChatList({ activeChatId, onSelectChat, readChatIds }) {
+export default function ChatList({ activeChatId, onSelectChat, readChatIds, demoArrowContactId }) {
   const isUnread = (bold, contactId) => bold && !readChatIds?.has(contactId)
   const [collapsed, setCollapsed] = useState(() => new Set())
   const isCollapsed = (key) => collapsed.has(key)
@@ -73,6 +73,11 @@ export default function ChatList({ activeChatId, onSelectChat, readChatIds }) {
         <Avatar contact={contact} size={20} />
         <span className={`chat-item-name ${unread ? 'chat-item-bold' : ''}`}>{contact.name}</span>
         {unread && <span className="unread-dot" />}
+        {demoArrowContactId === contact.id && (
+          <span className="chat-list-item-hint-arrow">
+            <DemoArrow direction="left" />
+          </span>
+        )}
       </div>
     )
   }

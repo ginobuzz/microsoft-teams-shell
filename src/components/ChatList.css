@@ -238,6 +238,16 @@
   border-color: var(--teams-border-subtle);
 }
 
+/* Points from just outside the panel edge back at the item during the
+   post-FRE walkthrough. See DESIGN_GUIDE.md → "Demo Hint Arrows". */
+.chat-list-item-hint-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  translate: 0 -50%;
+  pointer-events: none;
+}
+
 /* .avatar, .status-dot, .status-* now live in components/common/Avatar.css */
 /* Override the status-dot ring color so it blends with the chat list panel bg. */
 .chat-list-panel .status-dot {

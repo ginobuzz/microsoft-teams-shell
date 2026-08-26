@@ -30,7 +30,7 @@ export default function ChainOfThought({ steps, label = 'Completed steps' }) {
       {expanded && (
         <ul className="cot-steps" role="list">
           {steps.map((step, i) => (
-            <li key={i} className="cot-step">
+            <li key={i} className="cot-step" style={{ animationDelay: `${i * 90}ms` }}>
               <CheckCircle size={14} stroke="#707070" />
               <span className="cot-step-text">{typeof step === 'string' ? step : step.text}</span>
             </li>
